@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Despertador Digital</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .clock {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input {
+      width: 150px;
+    }
+
+    button {
+      background: #22c55e;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .alarm-set {
+      margin-top: 10px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="clock" id="clock">00:00:00</div>
+
+  <input type="time" id="alarmTime">
+  <button onclick="setAlarm()">Definir Alarme</button>
+
+  <div class="alarm-set" id="alarmInfo">Nenhum alarme definido</div>
+</div>
+
+<audio id="alarmSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" preload="auto"></audio>
+
+<script>
+  const clock = document.getElementById('clock');
+  const alarmInfo = document.getElementById('alarmInfo');
+  const alarmSound = document.getElementById('alarmSound');
+
+  let alarmTime = null;
+
+  function updateClock() {
+    const now = new Date();
+
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const currentTime = `${hours}:${minutes}:${seconds}`;
+    clock.textContent = currentTime;
+
+    if (alarmTime === `${hours}:${minutes}`) {
+      alarmSound.play();
+      alarmInfo.textContent = "⏰ Alarme tocando!";
+      alarmTime = null;
+    }
+  }
+
+  setInterval(updateClock, 1000);
+
+  function setAlarm() {
+    const input = document.getElementById('alarmTime').value;
+
+    if (!input) {
+      alert('Selecione um horário válido!');
+      return;
+    }
+
+    alarmTime = input;
+    alarmInfo.textContent = `Alarme definido para: ${input}`;
+  }
+</script>
+
+</body>
+</html>
